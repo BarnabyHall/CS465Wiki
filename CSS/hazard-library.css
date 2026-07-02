@@ -1,0 +1,147 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #f4f6f9;
+    overflow: hidden;
+}
+
+/* =======================
+   TOP CATEGORY BAR
+======================= */
+#categories {
+    display: flex;
+    gap: 8px;
+    padding: 10px;
+    background: #1f2a37;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+#categories button {
+    background: #2d3e50;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+#categories button:hover {
+    background: #3f556b;
+}
+
+#categories button.active {
+    background: #2563eb;
+}
+
+/* =======================
+   MAIN LAYOUT
+======================= */
+.container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* =======================
+   SIDEBAR
+======================= */
+#sidebar {
+    width: 280px;
+    background: white;
+    border-right: 1px solid #e5e7eb;
+    padding: 12px;
+    overflow-y: auto;
+}
+
+#sidebar .item {
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    transition: 0.2s;
+    font-size: 14px;
+}
+
+#sidebar .item:hover {
+    background: #eaf2ff;
+    border-color: #bcd3ff;
+}
+
+#sidebar .item.active {
+    background: #2563eb;
+    color: white;
+    border-color: #2563eb;
+}
+
+/* =======================
+   CONTENT PANEL
+======================= */
+#content {
+    flex: 1;
+    padding: 25px;
+    overflow-y: auto;
+    background: #f4f6f9;
+}
+
+/* Headings */
+#content h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #111827;
+}
+
+#content h3 {
+    margin-top: 18px;
+    margin-bottom: 8px;
+    color: #374151;
+    font-size: 16px;
+}
+
+/* Paragraphs */
+#content p {
+    margin-bottom: 10px;
+    color: #4b5563;
+    line-height: 1.5;
+}
+
+/* Risk score highlight */
+#content strong {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: #111827;
+    color: white;
+}
+
+/* Lists */
+#content ul {
+    margin-left: 20px;
+    margin-top: 8px;
+}
+
+#content li {
+    margin-bottom: 6px;
+    color: #374151;
+}
+
+/* Optional: card feel */
+#content {
+    background: #ffffff;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}

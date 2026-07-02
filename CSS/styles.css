@@ -1,0 +1,30 @@
+.tile-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 20px;
+}
+
+.tile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border: 1px, solid black;
+    border-radius: 10px;
+    text-decoration: none;
+    color: inherit;
+    background: white;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.tile:hover {
+    transform: translate(4px, 4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.icon {
+    font-size: 50px;
+    padding: 0;
+    margin: 0;
+}
