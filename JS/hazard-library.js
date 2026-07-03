@@ -30,11 +30,10 @@ function renderCategoriesHeader () {
         button.id = "categories"
         button.addEventListener("click", () => {
             activeCategory = hazardCategoryName
+            content.scrollTop = 0
+
             renderSidebarHazards()
             renderHazardData()
-            // render side bar
-            // clear content
-            // render content
         })
         hazardCategoriesContainer.appendChild(button)
     })
@@ -79,12 +78,17 @@ function renderSidebarHazards() {
 function renderHazardData () {
     // clear the element and arrays containing hazard data
     content.textContent = ""
-    
+
     let div = document.createElement("div")
     hazards.forEach((hazard) => {
         let hazardName = hazard.hazardName;
+        let hazardDescription = hazard.eventDescription
+        let hazardConsquenceDescription = hazard.consequenceDescription
+        let hazardConsquenceRating = hazard.consequenceRating
+        let riskManagementMeasures = hazard.riskManagementMeasures
+
         if (hazardSidebarList.includes(hazardName)) {
-            renderHazardCard(hazardName, hazard.hazardDescription, hazard.consequenceDescription, hazard.hazardConsquenceRating, hazard.riskManagementMeasures)
+            renderHazardCard(hazardName, hazardDescription, hazardConsquenceDescription, hazardConsquenceRating, riskManagementMeasures)
         }
     })
 }
@@ -98,15 +102,14 @@ function renderHazardCard (hazardName, hazardDescription, hazardConsquenceDescri
         <div class="hazard-box">
             <h2>${hazardName}</h2>
             <h3>Hazard Description</h3>
-            <p>${hazardConsquenceDescription}</p>
+            <p>${hazardDescription}</p>
             <h3>Hazard Consequence</h3>
             <p>${hazardConsquenceDescription}</p>
             <h3>Recommended Hazard Risk Level</h3>
             <strong>${hazardConsquenceRating}</strong>
             <h3>Risk Management Measures</h3>
             <ul>
-                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam, nesciunt ex possimus repellat quo nihil commodi earum dolore reprehenderit itaque velit? Animi atque, saepe iste impedit voluptatem cupiditate rem laboriosam.</li>
-                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem unde ipsam, impedit assumenda quibusdam praesentium placeat ipsa voluptas quod illum delectus dolores, nisi laudantium facere itaque. Numquam assumenda quis est!</li>
+                ${hazardRiskManagmentMeasures.map(rmm => `<li>${rmm}</li>`).join("")}
             </ul>
         </div>
     `;
