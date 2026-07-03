@@ -1,128 +1,114 @@
 import { hazards } from "./hazard-data.js";
 
-const sidebar = document.getElementById("sidebar");
-const content = document.getElementById("content");
-const categoriesBar = document.getElementById("categories");
+let activeCategory = ""
+let hazardSidebarList = []
 
-let currentCategory = null;
+let content = document.getElementById("content")
+let sideBar = document.getElementById("sidebar")
+let hazardCategoriesContainer = document.getElementById("categories")
 
-// 1. Build top categories (HTML header)
-function loadCategories() {
-    Object.keys(hazards).forEach(category => {
 
-        const btn = document.createElement("button");
-        btn.textContent = category;
+const hazardCategories = []
 
-        btn.onclick = () => {
-            currentCategory = category;
-            loadSubcategories(category);
-        };
+renderCategoriesHeader()
+renderSidebarHazards()
+renderHazardData ()
 
-        categoriesBar.appendChild(btn);
+function renderCategoriesHeader () {
+    // create a list of each unique category
+    hazards.forEach((hazard, index) => {
+    if (!hazardCategories.includes(hazard.hazardCategory)){
+        hazardCategories.push(hazard.hazardCategory)
+        }
     });
+    
+    // create elements for each category to append to header
+    hazardCategories.forEach((hazardCategoryName, index) => {
+        let button = document.createElement("button")
+        button.textContent = hazardCategoryName
+        button.classList.add("categories")
+        button.id = "categories"
+        button.addEventListener("click", () => {
+            activeCategory = hazardCategoryName
+            renderSidebarHazards()
+            renderHazardData()
+            // render side bar
+            // clear content
+            // render content
+        })
+        hazardCategoriesContainer.appendChild(button)
+    })
+
+    if (activeCategory == "") {
+        activeCategory = hazardCategories[0]
+    }
 }
 
-// 2. Build sidebar (hazard titles)
-function loadSubcategories(category) {
 
-    sidebar.innerHTML = "";
+function renderSidebarHazards() {
+    // clear the sidebar element before populating again
+    sideBar.textContent = ""
+    hazardSidebarList = []
 
-    Object.keys(hazards[category]).forEach(title => {
+    // create an array of all hazards in the active category
+    hazards.forEach((hazard, index) => {
+        let hazardName = hazard.hazardName
+        if (hazard.hazardCategory == activeCategory) {
+            hazardSidebarList.push(hazardName)
+        }
+    })
 
-        const div = document.createElement("div");
-        div.textContent = title;
-        div.classList.add("item");
-
-        div.onclick = () => {
-            renderHazard(category, title);
-        };
-
-        sidebar.appendChild(div);
-    });
+    // create elements to append to side bar      
+    hazardSidebarList.forEach((hazardName, index) => {
+        let div = document.createElement('div')
+        let button = document.createElement("button")
+        button.textContent = hazardName
+        button.classList.add("item")
+        button.addEventListener("click", () => {
+            document.getElementById(hazardName).scrollIntoView({
+                behavior: "smooth"
+            })
+        })
+        
+        div.appendChild(button)
+        sideBar.appendChild(div)
+    })
 }
 
-// 3. Show hazard details in HTML
-function renderHazard(category, title) {
 
-    const h = hazards[category][title];
+function renderHazardData () {
+    // clear the element and arrays containing hazard data
+    content.textContent = ""
+    
+    let div = document.createElement("div")
+    hazards.forEach((hazard) => {
+        let hazardName = hazard.hazardName;
+        if (hazardSidebarList.includes(hazardName)) {
+            renderHazardCard(hazardName, hazard.hazardDescription, hazard.consequenceDescription, hazard.hazardConsquenceRating, hazard.riskManagementMeasures)
+        }
+    })
+}
 
-    content.innerHTML = `
-        <h2>${title}</h2>
 
-        <h3>Event</h3>
-        <p>${h.eventDescription}</p>
-
-        <h3>Consequence</h3>
-        <p>${h.consequenceDescription}</p>
-
-        <h3>Hazard Rating</h3>
-        <p><strong>${h.consequenceRating}</strong></p>
-
-        <h3>Risk Management</h3>
-        <ul>
-            ${h.riskManagementMeasures.map(m => `<li>${m}</li>`).join("")}
-        </ul>
+function renderHazardCard (hazardName, hazardDescription, hazardConsquenceDescription, hazardConsquenceRating, hazardRiskManagmentMeasures) {
+    // create and append a hazard card
+    let div = document.createElement("div")
+    div.id = hazardName
+    div.innerHTML = `
+        <div class="hazard-box">
+            <h2>${hazardName}</h2>
+            <h3>Hazard Description</h3>
+            <p>${hazardConsquenceDescription}</p>
+            <h3>Hazard Consequence</h3>
+            <p>${hazardConsquenceDescription}</p>
+            <h3>Recommended Hazard Risk Level</h3>
+            <strong>${hazardConsquenceRating}</strong>
+            <h3>Risk Management Measures</h3>
+            <ul>
+                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam, nesciunt ex possimus repellat quo nihil commodi earum dolore reprehenderit itaque velit? Animi atque, saepe iste impedit voluptatem cupiditate rem laboriosam.</li>
+                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem unde ipsam, impedit assumenda quibusdam praesentium placeat ipsa voluptas quod illum delectus dolores, nisi laudantium facere itaque. Numquam assumenda quis est!</li>
+            </ul>
+        </div>
     `;
-
-    // create copy buttons
-    const copyDesButton = document.createElement("button");
-    copyDesButton.textContent = "📋 Description";
-
-    copyDesButton.addEventListener("click", async () => {
-        try {
-            await navigator.clipboard.writeText(h.eventDescription);
-            copyDesButton.textContent = "✓ Copied";
-
-            setTimeout(() => {
-                copyDesButton.textContent = "📋 Description";
-            }, 1500);
-        } catch (err) {
-            console.error(err);
-        }
-    });
-
-    content.appendChild(copyDesButton);
-
-    const copyConsButton = document.createElement("button");
-    copyConsButton.textContent = "📋 Consequence";
-
-    copyConsButton.addEventListener("click", async () => {
-        try {
-            await navigator.clipboard.writeText(h.consequenceDescription);
-            copyConsButton.textContent = "✓ Copied";
-
-            setTimeout(() => {
-                copyConsButton.textContent = "📋 Consequence";
-            }, 1500);
-        } catch (err) {
-            console.error(err);
-        }
-    });
-
-    content.appendChild(copyConsButton);
-
-    const copyMeasuButton = document.createElement("button");
-    copyMeasuButton.textContent = "📋 Measures";
-
-    copyMeasuButton.addEventListener("click", async () => {
-        try {
-            await navigator.clipboard.writeText(h.riskManagementMeasures);
-            copyMeasuButton.textContent = "✓ Copied";
-
-            setTimeout(() => {
-                copyMeasuButton.textContent = "📋 Measures";
-            }, 1500);
-        } catch (err) {
-            console.error(err);
-        }
-    });
-
-    content.appendChild(copyMeasuButton);
-
-
+    content.appendChild(div)
 }
-
-// INIT PAGE
-loadCategories();
-loadSubcategories("Vulnerable Details and Material Hazards")
-renderHazard("Vulnerable Details and Material Hazards", "Segmental Joints – Narrow In-Situ Mortar")
