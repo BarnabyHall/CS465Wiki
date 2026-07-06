@@ -151,3 +151,22 @@ body {
 .hazard-box:hover {
     box-shadow: 0px 10px 10px rgba(0,0,0,0.05);
 }
+
+.hazard-box.selected {
+    border: solid 2px #2563eb;
+    background-color: #bcd3ff;
+}
+
+.copy-button {
+    border: solid 1px transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
+    margin-left: 5px;
+    background-color: transparent;
+}
+
+.copy-button:hover {
+    border: solid 1px rgb(136, 122, 122);
+    background-color: #5b616d;
+}

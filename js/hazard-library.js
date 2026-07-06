@@ -94,24 +94,108 @@ function renderHazardData () {
 }
 
 
-function renderHazardCard (hazardName, hazardDescription, hazardConsquenceDescription, hazardConsquenceRating, hazardRiskManagmentMeasures) {
-    // create and append a hazard card
-    let div = document.createElement("div")
-    div.id = hazardName
-    div.innerHTML = `
-        <div class="hazard-box">
-            <h2>${hazardName}</h2>
-            <h3>Hazard Description</h3>
-            <p>${hazardDescription}</p>
-            <h3>Hazard Consequence</h3>
-            <p>${hazardConsquenceDescription}</p>
-            <h3>Recommended Hazard Risk Level</h3>
-            <strong>${hazardConsquenceRating}</strong>
-            <h3>Risk Management Measures</h3>
-            <ul>
-                ${hazardRiskManagmentMeasures.map(rmm => `<li>${rmm}</li>`).join("")}
-            </ul>
-        </div>
-    `;
-    content.appendChild(div)
+function renderHazardCard(
+    hazardName,
+    hazardDescription,
+    consequenceDescription,
+    consequenceRating,
+    riskManagementMeasures,
+) {
+    // create the container for the elements to be appended to
+    let parentDiv = document.createElement("div");
+    parentDiv.id = hazardName;
+    parentDiv.classList.add("hazard-box")
+    parentDiv.addEventListener("click", () => {
+        parentDiv.classList.toggle("selected")
+    })
+
+
+    // create and edit the card title
+    let cardTitle = document.createElement("h2")
+    cardTitle.textContent = hazardName
+    
+
+    // create the hazard description
+    let descriptionHeaderEl = document.createElement("h3")
+    descriptionHeaderEl.textContent = "Event"
+    descriptionHeaderEl.appendChild(createCopyButton(hazardDescription))
+
+    let descriptionContentEl = document.createElement("p")
+    descriptionContentEl.textContent = hazardDescription
+
+
+    // create the consequence description
+    let consequenceHeaderEl = document.createElement("h3")
+    consequenceHeaderEl.textContent = "Consequence"
+    consequenceHeaderEl.appendChild(createCopyButton(consequenceDescription))
+
+    let consequenceDescriptionEl = document.createElement("p")
+    consequenceDescriptionEl.textContent = consequenceDescription
+
+    let consequenceRatingEl = document.createElement("strong")
+    consequenceRatingEl.textContent = consequenceRating
+
+
+    // create risk management measures (inc. check for list >0)
+    let riskManagementMeasuresHeaderEl = document.createElement("h3")
+    riskManagementMeasuresHeaderEl.textContent = "Risk Management Measures"
+    riskManagementMeasuresHeaderEl.appendChild(createCopyButton(riskManagementMeasures))
+
+    let ul = document.createElement("ul")
+
+    if (!riskManagementMeasures || riskManagementMeasures.length === 0) {
+        ul.innerHTML = "<li> Risk Management Measure TBC</li>"
+    } else {   
+        riskManagementMeasures.forEach(rmm => {
+            const li = document.createElement("li")
+            li.textContent = rmm
+            ul.appendChild(li)
+        })
+    }
+
+
+
+    // append all the elements of the card in order
+    parentDiv.appendChild(cardTitle)
+
+    parentDiv.appendChild(descriptionHeaderEl)
+    parentDiv.appendChild(descriptionContentEl)
+
+    parentDiv.appendChild(consequenceHeaderEl)
+    parentDiv.appendChild(consequenceDescriptionEl)
+    parentDiv.appendChild(consequenceRatingEl)
+
+    parentDiv.appendChild(riskManagementMeasuresHeaderEl)
+    parentDiv.appendChild(ul)
+
+
+    // move content to an input variable of the function
+    content.appendChild(parentDiv)
+
 }
+
+
+function createCopyButton(textToCopy) {
+    let button = document.createElement("button");
+    button.textContent = "📋";
+    button.classList.add("copy-button");
+
+    if (Array.isArray(textToCopy)) {
+        textToCopy = textToCopy.join("\n");
+    }
+
+    button.addEventListener("click", () => {
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            const original = button.textContent;
+            button.textContent = "✔";
+
+            setTimeout(() => {
+                button.textContent = original;
+            }, 1500);
+        });
+    });
+
+    return button;
+}
+
+
