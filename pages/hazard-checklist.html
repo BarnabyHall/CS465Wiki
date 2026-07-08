@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="../css/hazard-library.css">
+    <link rel="stylesheet" href="../css/nav.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/checklist.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
@@ -17,14 +21,30 @@
 
         <div class="menu-btn" id="menuBtn">☰</div>
     </nav> 
-    <div>
-        <h3>Vulnerable Details and Material Hazards</h3>
-        <ul id="vulnerableDetails"></ul>
+    <div class="category-container">
+        <div >
+            <h3>Vulnerable Details and Material Hazards <strong id="vulnerableCount">(0)</strong></h3>
+            <ul id="vulnerableDetails"></ul>
+        </div>
+        <div>
+            <h3>Condition Hazards - External</h3>
+            <ul id="conditionExt"></ul>
+        </div>
+        <div>
+            <h3>Condition Hazards - Internal (Post-Tensioning)</h3>
+            <ul id="conditionInt"></ul>
+        </div>
+        <div>
+            <h3>History Hazards</h3>
+            <ul id="history"></ul>
+        </div>
+        <div>
+            <h3>Assessment Hazards</h3>
+            <ul id="assessment"></ul>
+        </div>
     </div>
-    <div id="conditionInt"></div>
-    <div id="conditionExt"></div>
-    <div id="history"></div>
-    <div id="assessment"></div>
+
+
 
     <script type="module" src="../js/checklist.js"></script>
 </body>

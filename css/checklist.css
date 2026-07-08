@@ -1,0 +1,21 @@
+.category-container {
+    display: flex;
+    justify-content: space-evenly;
+
+}
+
+.checklist-item {
+    background-color: rgb(222, 243, 255);
+    padding: 3px;
+    margin: 3px;
+    list-style: none;
+    cursor: pointer;
+}
+
+.checklist-item:hover {
+    background-color: rgb(226, 255, 255);
+}
+
+.checklist-item-active {
+    background-color: rgb(159, 220, 255);
+}
