@@ -184,7 +184,9 @@ function createCopyButton(textToCopy) {
         textToCopy = textToCopy.join("\n");
     }
 
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (e) => {
+        e.stopPropagation(); // prevents the button interacting with other elements
+        
         navigator.clipboard.writeText(textToCopy).then(() => {
             const original = button.textContent;
             button.textContent = "✔";
