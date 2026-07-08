@@ -7,7 +7,17 @@ const historyContainer = document.getElementById("history")
 const assessmentContainer = document.getElementById("assessment")
 
 const vulnerableCountEl = document.getElementById("vulnerableCount")
+const conditionExtCountEl = document.getElementById("conditionExtCount")
+const conditionIntCountEl = document.getElementById("conditionIntCount")
+const historyCountEl = document.getElementById("historyCount")
+const assessmentCountEl = document.getElementById("assessmentCount")
 
+
+const clearButton = document.getElementById("clearCheckboxesButton")
+
+clearButton.addEventListener("click", () => {
+    resetCheckboxes()
+})
 
 
 function renderHazardChecklist () {
@@ -19,19 +29,20 @@ function renderHazardChecklist () {
             createChecklistItem(hazardName, vulnerableDetailContainer, vulnerableCountEl)
 
         } else if (hazardCat == "Condition Hazards - External") {
-            createChecklistItem(hazardName, conditionExtContainer)
+            createChecklistItem(hazardName, conditionExtContainer, conditionExtCountEl)
             
         } else if (hazardCat == "Condition Hazards - Internal (Post-Tensioning)") {
-            createChecklistItem(hazardName, conditionIntContainer)
+            createChecklistItem(hazardName, conditionIntContainer, conditionIntCountEl)
 
         } else if (hazardCat == "History Hazards") {
-            createChecklistItem(hazardName, historyContainer)
+            createChecklistItem(hazardName, historyContainer, historyCountEl)
 
         } else if (hazardCat == "Assessment Hazards") {
-            createChecklistItem(hazardName, assessmentContainer)
+            createChecklistItem(hazardName, assessmentContainer, assessmentCountEl)
         }
     });
 }
+
 
 function createChecklistItem (hazardTitle, parentEl, countEl) {
     const li = document.createElement("li")
@@ -45,13 +56,13 @@ function createChecklistItem (hazardTitle, parentEl, countEl) {
     li.addEventListener("click", () => {
         checkbox.checked = !checkbox.checked
         updateCheckbox(checkbox, li)
-        updateCount(vulnerableDetailContainer, countEl)
+        updateCount(parentEl, countEl)
     })
 
     checkbox.addEventListener("click", (e) => {
         e.stopPropagation()
         updateCheckbox(checkbox, li)
-        updateCount(vulnerableDetailContainer)
+        updateCount(parentEl, countEl)
     })
 
     li.appendChild(checkbox)
@@ -60,6 +71,7 @@ function createChecklistItem (hazardTitle, parentEl, countEl) {
     parentEl.appendChild(li)
 } 
 
+
 function updateCheckbox (checkbox, hazardDiv) {
     if (checkbox.checked) {
         hazardDiv.classList.add("checklist-item-active")
@@ -67,6 +79,7 @@ function updateCheckbox (checkbox, hazardDiv) {
         hazardDiv.classList.remove("checklist-item-active")
     }
 }
+
 
 function updateCount(container, countEl) {
     let count = 0
@@ -78,5 +91,23 @@ function updateCount(container, countEl) {
     })
     countEl.textContent = "(" + count + ")"
 }
+
+
+function resetCheckboxes() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]')
+
+    checkboxes.forEach((checkbox) => {
+        checkbox.checked = false
+        checkbox.closest(".checklist-item")?.classList.remove("checklist-item-active")
+    })
+
+    vulnerableCountEl.textContent = "(0)"
+    conditionExtCountEl.textContent = "(0)"
+    conditionIntCountEl.textContent = "(0)"
+    historyCountEl.textContent = "(0)"
+    assessmentCountEl.textContent = "(0)"
+    
+}
+
 
 renderHazardChecklist()
