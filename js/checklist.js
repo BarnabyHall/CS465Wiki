@@ -15,8 +15,12 @@ const assessmentCountEl = document.getElementById("assessmentCount")
 
 const clearButton = document.getElementById("clearCheckboxesButton")
 
+renderHazardChecklist()
+loadCheckboxes()
+
 clearButton.addEventListener("click", () => {
     resetCheckboxes()
+    saveCheckboxes()
 })
 
 
@@ -50,6 +54,7 @@ function createChecklistItem (hazardTitle, parentEl, countEl) {
     
     const checkbox = document.createElement("input")
     checkbox.type = "checkbox"
+    checkbox.id = hazardTitle
     
     li.classList.add("checklist-item")
     
@@ -57,12 +62,14 @@ function createChecklistItem (hazardTitle, parentEl, countEl) {
         checkbox.checked = !checkbox.checked
         updateCheckbox(checkbox, li)
         updateCount(parentEl, countEl)
+        saveCheckboxes()
     })
 
     checkbox.addEventListener("click", (e) => {
         e.stopPropagation()
         updateCheckbox(checkbox, li)
         updateCount(parentEl, countEl)
+        saveCheckboxes()
     })
 
     li.appendChild(checkbox)
@@ -110,4 +117,29 @@ function resetCheckboxes() {
 }
 
 
-renderHazardChecklist()
+function saveCheckboxes() {
+    const states = {};
+
+    document.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
+        states[checkbox.id] = checkbox.checked;
+    })
+
+    localStorage.setItem("checkboxStates", JSON.stringify(states))
+}
+
+
+function loadCheckboxes() {
+    const states = JSON.parse(localStorage.getItem("checkboxStates") || "{}");
+    console.log(states)
+
+    document.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
+        if (states.hasOwnProperty(checkbox.id)) {
+            checkbox.checked = states[checkbox.id]
+            if (checkbox.checked) {
+                checkbox.closest(".checklist-item")?.classList.add("checklist-item-active")
+            }
+        }
+    })
+}
+
+
