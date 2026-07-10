@@ -5,17 +5,27 @@ body {
 
 .navbar {
     display: flex;
-    gap: 1rem;
-    padding: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    gap: 5px;
+    padding: 5px;
     background: #333;
 }
 
 .navbar a {
     color: white;
     text-decoration: none;
+    padding: 15px;
 }
 
 .navbar a.active {
     color: #4dabff;
     font-weight: bold;
+}
+
+.navbar a:hover{
+    background-color: #4dabff;
+    color: white;
+    border-radius: 5px;
 }
